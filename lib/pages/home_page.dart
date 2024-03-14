@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
+// Project imports:
+import 'package:ew_flutter_demo/widgets/weather_forecast_widget.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -65,6 +68,32 @@ class _HomePageState extends State<HomePage> {
               child: Icon(FontAwesomeIcons.fire),
             ),
           ),
+        ],
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            flex: 4,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      return WeatherForecastWidget(
+                        height: constraints.maxHeight,
+                      );
+                    },
+                  ),
+                ),
+                const Flexible(flex: 2, child: Placeholder())
+              ],
+            ),
+          ),
+          const Flexible(flex: 2, child: Placeholder())
         ],
       ),
     );
