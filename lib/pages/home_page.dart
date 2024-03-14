@@ -1,5 +1,6 @@
 // Dart imports:
 import 'dart:async';
+import 'dart:math';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
+import 'package:ew_flutter_demo/services/boost_service.dart';
 import 'package:ew_flutter_demo/widgets/heating_schedule_widget.dart';
 import 'package:ew_flutter_demo/widgets/weather_forecast_widget.dart';
 
@@ -20,8 +22,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _showHeating = true;
   String _timeString = '';
+  final BoostService _boostService = BoostService();
 
   _updateTimeString() {
     final String formattedTime = DateFormat('kk:mm:ss').format(DateTime.now());
@@ -43,19 +45,44 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: TextButton(
-          onPressed: () {
-            setState(() {
-              _showHeating = !_showHeating;
-            });
-          },
-          child: const Icon(
-            FontAwesomeIcons.bars,
-            color: Colors.white,
-          ),
+        leadingWidth: 200,
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextButton(
+              onPressed: () {
+                if (_boostService.boosting) {
+                  _boostService.stop();
+                } else {
+                  _boostService.boostDurationSec = Random().nextInt(500);
+                  _boostService.start();
+                }
+              },
+              child: Icon(
+                _boostService.boosting
+                    ? FontAwesomeIcons.pause
+                    : FontAwesomeIcons.play,
+                color: Colors.white,
+              ),
+            ),
+            Visibility(
+              visible: _boostService.boosting,
+              child: Text(
+                _boostService.boostRemaining(),
+                style: const TextStyle(
+                  fontSize: 24,
+                ),
+              ),
+            ),
+          ],
         ),
         centerTitle: true,
-        title: Text(_timeString),
+        title: Text(
+          _timeString,
+          style: const TextStyle(
+            fontSize: 24,
+          ),
+        ),
         actions: [
           const Padding(
             padding: EdgeInsets.only(right: 16),
@@ -63,7 +90,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
           Visibility(
-            visible: _showHeating,
+            visible: _boostService.boosting,
             child: const Padding(
               padding: EdgeInsets.only(right: 16),
               child: Icon(FontAwesomeIcons.fire),
