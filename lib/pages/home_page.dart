@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 // Project imports:
 import 'package:ew_flutter_demo/services/boost_service.dart';
@@ -22,8 +23,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String _timeString = '';
   final BoostService _boostService = BoostService();
+  String _timeString = '';
+  int _thermostatSetpoint = 21;
 
   _updateTimeString() {
     final String formattedTime = DateFormat('kk:mm:ss').format(DateTime.now());
@@ -88,6 +90,13 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.only(right: 16),
             child: Icon(FontAwesomeIcons.wifi),
           ),
+          Visibility(
+            visible: _thermostatSetpoint != 21,
+            child: const Padding(
+              padding: EdgeInsets.only(right: 16),
+              child: Icon(FontAwesomeIcons.handPointUp),
+            ),
+          ),
           const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
           Visibility(
             visible: _boostService.boosting,
@@ -117,9 +126,77 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 ),
-                const Flexible(flex: 2, child: Placeholder())
+                const VerticalDivider(
+                  color: Colors.white54,
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Center(
+                    child: SleekCircularSlider(
+                      appearance: CircularSliderAppearance(
+                        size: 400,
+                        customWidths: CustomSliderWidths(
+                          handlerSize: 16,
+                          progressBarWidth: 16,
+                          trackWidth: 1,
+                        ),
+                        customColors: CustomSliderColors(
+                          trackColor: Colors.white70,
+                          progressBarColors: <Color>[
+                            Colors.red,
+                            Colors.orange,
+                            Colors.orange,
+                            Colors.blue,
+                          ],
+                        ),
+                      ),
+                      min: 5,
+                      max: 40,
+                      initialValue: _thermostatSetpoint.toDouble(),
+                      onChange: (double value) {
+                        setState(() {
+                          _thermostatSetpoint = value.toInt();
+                        });
+                      },
+                      innerWidget: (double value) {
+                        return Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              '${value.toInt().toString()}°C',
+                              style: const TextStyle(
+                                fontSize: 24,
+                              ),
+                            ),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.temperatureHalf,
+                                ),
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8)),
+                                Text(
+                                  '21°C',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ));
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
+          ),
+          const Divider(
+            color: Colors.white54,
           ),
           const Flexible(
             flex: 2,
