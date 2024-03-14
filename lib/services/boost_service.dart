@@ -11,6 +11,10 @@ class BoostService {
   late int _boostRemainingSec = 0;
   late Timer _boostTimer;
 
+  final void Function() onBoostFinished;
+
+  BoostService({required this.onBoostFinished});
+
   String boostRemaining() {
     return StringUtils.intToTimeLeft(_boostRemainingSec);
   }
@@ -21,6 +25,7 @@ class BoostService {
     _boostTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_boostRemainingSec == 0) {
         boosting = false;
+        onBoostFinished();
         _boostTimer.cancel();
       } else {
         _boostRemainingSec--;
@@ -35,6 +40,7 @@ class BoostService {
 
     boosting = false;
     _boostRemainingSec = 0;
+    onBoostFinished();
     _boostTimer.cancel();
   }
 }

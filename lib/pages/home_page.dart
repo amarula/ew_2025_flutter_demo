@@ -1,6 +1,5 @@
 // Dart imports:
 import 'dart:async';
-import 'dart:math';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
@@ -23,16 +22,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final BoostService _boostService = BoostService();
+  late final BoostService _boostService = BoostService(
+    onBoostFinished: () {
+      _setSetpoint(21);
+    },
+  );
   String _timeString = '';
   int _thermostatSetpoint = 21;
 
   _updateTimeString() {
     final String formattedTime = DateFormat('kk:mm:ss').format(DateTime.now());
 
-    setState(() {
-      _timeString = formattedTime;
-    });
+    _timeString = formattedTime;
+    setState(() {});
+  }
+
+  _setSetpoint(int setpoint) {
+    _thermostatSetpoint = setpoint;
+    setState(() {});
   }
 
   @override
@@ -56,8 +63,9 @@ class _HomePageState extends State<HomePage> {
                 if (_boostService.boosting) {
                   _boostService.stop();
                 } else {
-                  _boostService.boostDurationSec = Random().nextInt(500);
+                  _boostService.boostDurationSec = 10;
                   _boostService.start();
+                  _setSetpoint(40);
                 }
               },
               child: Icon(
@@ -90,6 +98,7 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.only(right: 16),
             child: Icon(FontAwesomeIcons.wifi),
           ),
+          const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
           Visibility(
             visible: _thermostatSetpoint != 21,
             child: const Padding(
@@ -134,6 +143,7 @@ class _HomePageState extends State<HomePage> {
                   child: Center(
                     child: SleekCircularSlider(
                       appearance: CircularSliderAppearance(
+                        animDurationMultiplier: 0,
                         size: 400,
                         customWidths: CustomSliderWidths(
                           handlerSize: 16,
@@ -145,7 +155,6 @@ class _HomePageState extends State<HomePage> {
                           progressBarColors: <Color>[
                             Colors.red,
                             Colors.orange,
-                            Colors.orange,
                             Colors.blue,
                           ],
                         ),
@@ -154,9 +163,7 @@ class _HomePageState extends State<HomePage> {
                       max: 40,
                       initialValue: _thermostatSetpoint.toDouble(),
                       onChange: (double value) {
-                        setState(() {
-                          _thermostatSetpoint = value.toInt();
-                        });
+                        _setSetpoint(value.toInt());
                       },
                       innerWidget: (double value) {
                         return Center(
@@ -170,10 +177,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             const Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   FontAwesomeIcons.temperatureHalf,
+                                  size: 32,
                                 ),
                                 Padding(
                                     padding:
@@ -181,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                                 Text(
                                   '21°C',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 32,
                                   ),
                                 )
                               ],
