@@ -19,8 +19,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Demo Thermostat',
-      theme: FlexThemeData.light(scheme: FlexScheme.shark),
-      darkTheme: FlexThemeData.dark(scheme: FlexScheme.shark),
+      theme: FlexThemeData.light(
+        scheme: FlexScheme.shark,
+        fontFamily: 'RobotoMono',
+      ),
+      darkTheme: FlexThemeData.dark(
+        scheme: FlexScheme.shark,
+        fontFamily: 'RobotoMono',
+      ),
       themeMode: ThemeMode.dark,
       home: const HomePage(),
     );
