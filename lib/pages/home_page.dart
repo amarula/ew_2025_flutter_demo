@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
+import 'package:ew_flutter_demo/widgets/heating_schedule_widget.dart';
 import 'package:ew_flutter_demo/widgets/weather_forecast_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -93,7 +94,12 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          const Flexible(flex: 2, child: Placeholder())
+          const Flexible(
+            flex: 2,
+            child: SizedBox.expand(
+              child: HeatingScheduleWidget(),
+            ),
+          )
         ],
       ),
     );
