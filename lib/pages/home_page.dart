@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-            flex: 4,
+            flex: 5,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -141,63 +141,71 @@ class _HomePageState extends State<HomePage> {
                 Flexible(
                   flex: 2,
                   child: Center(
-                    child: SleekCircularSlider(
-                      appearance: CircularSliderAppearance(
-                        animDurationMultiplier: 0,
-                        size: 400,
-                        customWidths: CustomSliderWidths(
-                          handlerSize: 16,
-                          progressBarWidth: 16,
-                          trackWidth: 1,
-                        ),
-                        customColors: CustomSliderColors(
-                          trackColor: Colors.white70,
-                          progressBarColors: <Color>[
-                            Colors.red,
-                            Colors.orange,
-                            Colors.blue,
-                          ],
-                        ),
-                      ),
-                      min: 5,
-                      max: 40,
-                      initialValue: _thermostatSetpoint.toDouble(),
-                      onChange: (double value) {
-                        _setSetpoint(value.toInt());
-                      },
-                      innerWidget: (double value) {
-                        return Center(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              '${value.toInt().toString()}°C',
-                              style: const TextStyle(
-                                fontSize: 24,
-                              ),
+                    child: Column(
+                      children: [
+                        const Padding(padding: EdgeInsets.all(24)),
+                        SleekCircularSlider(
+                          appearance: CircularSliderAppearance(
+                            animDurationMultiplier: 0,
+                            size: 368,
+                            customWidths: CustomSliderWidths(
+                              handlerSize: 16,
+                              progressBarWidth: 16,
+                              trackWidth: 1,
                             ),
-                            const Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  FontAwesomeIcons.temperatureHalf,
-                                  size: 32,
-                                ),
-                                Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 8)),
-                                Text(
-                                  '21°C',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                  ),
-                                )
+                            customColors: CustomSliderColors(
+                              trackColor: Colors.white70,
+                              progressBarColors: <Color>[
+                                Colors.red,
+                                Colors.orange,
+                                Colors.blue,
                               ],
-                            )
-                          ],
-                        ));
-                      },
+                            ),
+                          ),
+                          min: 5,
+                          max: 40,
+                          initialValue: _thermostatSetpoint.toDouble(),
+                          onChange: (double value) {
+                            _setSetpoint(value.toInt());
+                          },
+                          innerWidget: (double value) {
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    '${value.toInt().toString()}°C',
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  const Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.temperatureHalf,
+                                        size: 32,
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8)),
+                                      Text(
+                                        '21°C',
+                                        style: TextStyle(
+                                          fontSize: 32,
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),

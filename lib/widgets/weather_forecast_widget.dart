@@ -39,7 +39,10 @@ class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Lottie.asset('assets/lottie/weather_partly_cloud.json'),
+              Lottie.asset(
+                'assets/lottie/weather_partly_cloud.json',
+                height: 216,
+              ),
               const Column(
                 children: [
                   Text(
@@ -75,7 +78,10 @@ class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Lottie.asset('assets/lottie/weather_sunny.json'),
+              Lottie.asset(
+                'assets/lottie/weather_sunny.json',
+                height: 216,
+              ),
               const Column(
                 children: [
                   Text(
@@ -111,7 +117,10 @@ class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Lottie.asset('assets/lottie/weather_storm.json'),
+              Lottie.asset(
+                'assets/lottie/weather_storm.json',
+                height: 216,
+              ),
               const Column(
                 children: [
                   Text(
