@@ -10,9 +10,9 @@ import 'package:intl/intl.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 // Project imports:
-import 'package:ew_flutter_demo/services/boost_service.dart';
-import 'package:ew_flutter_demo/widgets/heating_schedule_widget.dart';
-import 'package:ew_flutter_demo/widgets/weather_forecast_widget.dart';
+import 'package:ew_2025_flutter_demo/services/boost_service.dart';
+import 'package:ew_2025_flutter_demo/widgets/heating_schedule_widget.dart';
+import 'package:ew_2025_flutter_demo/widgets/weather_forecast_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,14 +30,14 @@ class _HomePageState extends State<HomePage> {
   String _timeString = '';
   int _thermostatSetpoint = 21;
 
-  _updateTimeString() {
-    final String formattedTime = DateFormat('kk:mm:ss').format(DateTime.now());
+  void _updateTimeString() {
+    final formattedTime = DateFormat('kk:mm:ss').format(DateTime.now());
 
     _timeString = formattedTime;
     setState(() {});
   }
 
-  _setSetpoint(int setpoint) {
+  void _setSetpoint(int setpoint) {
     _thermostatSetpoint = setpoint;
     setState(() {});
   }
@@ -46,7 +46,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     _updateTimeString();
     Timer.periodic(
-        const Duration(seconds: 1), (Timer t) => _updateTimeString());
+      const Duration(seconds: 1),
+      (Timer t) => _updateTimeString(),
+    );
     super.initState();
   }
 
@@ -63,8 +65,9 @@ class _HomePageState extends State<HomePage> {
                 if (_boostService.boosting) {
                   _boostService.stop();
                 } else {
-                  _boostService.boostDurationSec = 10;
-                  _boostService.start();
+                  _boostService
+                    ..boostDurationSec = 10
+                    ..start();
                   _setSetpoint(40);
                 }
               },
@@ -125,7 +128,6 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                  flex: 1,
                   child: LayoutBuilder(
                     builder:
                         (BuildContext context, BoxConstraints constraints) {
@@ -175,14 +177,12 @@ class _HomePageState extends State<HomePage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                    '${value.toInt().toString()}°C',
+                                    '${value.toInt()}°C',
                                     style: const TextStyle(
                                       fontSize: 24,
                                     ),
                                   ),
                                   const Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
@@ -190,16 +190,18 @@ class _HomePageState extends State<HomePage> {
                                         size: 32,
                                       ),
                                       Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 8)),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                        ),
+                                      ),
                                       Text(
                                         '21°C',
                                         style: TextStyle(
                                           fontSize: 32,
                                         ),
-                                      )
+                                      ),
                                     ],
-                                  )
+                                  ),
                                 ],
                               ),
                             );
@@ -220,7 +222,7 @@ class _HomePageState extends State<HomePage> {
             child: SizedBox.expand(
               child: HeatingScheduleWidget(),
             ),
-          )
+          ),
         ],
       ),
     );

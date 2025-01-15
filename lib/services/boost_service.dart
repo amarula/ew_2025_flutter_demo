@@ -2,9 +2,11 @@
 import 'dart:async';
 
 // Project imports:
-import 'package:ew_flutter_demo/utils/string_utils.dart';
+import 'package:ew_2025_flutter_demo/utils/string_utils.dart';
 
 class BoostService {
+  BoostService({required this.onBoostFinished});
+
   bool boosting = false;
   int boostDurationSec = 10;
 
@@ -12,8 +14,6 @@ class BoostService {
   late Timer _boostTimer;
 
   final void Function() onBoostFinished;
-
-  BoostService({required this.onBoostFinished});
 
   String boostRemaining() {
     return StringUtils.intToTimeLeft(_boostRemainingSec);

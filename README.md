@@ -1,6 +1,6 @@
-# ew_flutter_demo
+# ew_2025_flutter_demo
 
-Flutter thermostat demo for Embedded World 2024
+Flutter thermostat demo for Embedded World 2025
 
 ![Normal](screenshot/normal.png)
 ---

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 // Project imports:
-import 'package:ew_flutter_demo/pages/home_page.dart';
+import 'package:ew_2025_flutter_demo/pages/home_page.dart';
 
 void main() {
   runApp(const MyApp());

@@ -6,12 +6,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:lottie/lottie.dart';
 
 class WeatherForecastWidget extends StatefulWidget {
-  final double height;
-
   const WeatherForecastWidget({
-    super.key,
     required this.height,
+    super.key,
   });
+
+  final double height;
 
   @override
   State<WeatherForecastWidget> createState() => _WeatherForecastWidgetState();
@@ -24,12 +24,10 @@ class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
       child: CarouselSlider(
         options: CarouselOptions(
           height: widget.height,
-          viewportFraction: 1.0,
-          enlargeCenterPage: false,
+          viewportFraction: 1,
         ),
         items: <Widget>[
           Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const Text(
@@ -62,13 +60,12 @@ class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
                     style: TextStyle(
                       fontSize: 24,
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const Text(
@@ -101,13 +98,12 @@ class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
                     style: TextStyle(
                       fontSize: 24,
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const Text(
@@ -140,9 +136,9 @@ class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
                     style: TextStyle(
                       fontSize: 24,
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ],

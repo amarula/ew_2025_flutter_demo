@@ -1,9 +1,11 @@
 class StringUtils {
   static String intToTimeLeft(int value) {
-    int h, m, s;
+    int h;
+    int m;
+    int s;
 
     h = value ~/ 3600;
-    m = ((value - h * 3600)) ~/ 60;
+    m = (value - h * 3600) ~/ 60;
     s = value - (h * 3600) - (m * 60);
 
     if (h > 0) {

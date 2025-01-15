@@ -52,75 +52,52 @@ class _HeatingScheduleWidgetState extends State<HeatingScheduleWidget> {
     switch (value.toInt()) {
       case 0:
         text = '00';
-        break;
       case 1:
         text = '01';
-        break;
       case 2:
         text = '02';
-        break;
       case 3:
         text = '03';
-        break;
       case 4:
         text = '04';
-        break;
       case 5:
         text = '05';
-        break;
       case 6:
         text = '06';
-        break;
       case 7:
         text = '07';
-        break;
       case 8:
         text = '08';
-        break;
       case 9:
         text = '09';
-        break;
       case 10:
         text = '10';
-        break;
       case 11:
         text = '11';
-        break;
       case 12:
         text = '12';
       case 13:
         text = '13';
-        break;
       case 14:
         text = '14';
-        break;
       case 15:
         text = '15';
-        break;
       case 16:
         text = '16';
-        break;
       case 17:
         text = '17';
-        break;
       case 18:
         text = '18';
-        break;
       case 19:
         text = '19';
-        break;
       case 20:
         text = '20';
-        break;
       case 21:
         text = '21';
-        break;
       case 22:
         text = '22';
-        break;
       case 23:
         text = '23';
-        break;
       default:
         return Container();
     }
@@ -175,118 +152,117 @@ class _HeatingScheduleWidgetState extends State<HeatingScheduleWidget> {
       aspectRatio: 2.5,
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: 24.0,
+          horizontal: 24,
           vertical: 10,
         ),
-        child: LayoutBuilder(builder: (context, constraints) {
-          return LineChart(
-            LineChartData(
-              showingTooltipIndicators: showingTooltipOnSpots.map((index) {
-                return ShowingTooltipIndicators([
-                  LineBarSpot(
-                    tooltipsOnBar,
-                    lineBarsData.indexOf(tooltipsOnBar),
-                    tooltipsOnBar.spots[index],
-                  ),
-                ]);
-              }).toList(),
-              lineTouchData: LineTouchData(
-                enabled: true,
-                handleBuiltInTouches: true,
-                touchCallback:
-                    (FlTouchEvent event, LineTouchResponse? response) {
-                  if (response == null || response.lineBarSpots == null) {
-                    return;
-                  }
-                  if (event is FlTapUpEvent) {
-                    final spotIndex = response.lineBarSpots!.first.spotIndex;
-                    setState(() {
-                      if (showingTooltipOnSpots.contains(spotIndex)) {
-                        showingTooltipOnSpots.remove(spotIndex);
-                      } else {
-                        showingTooltipOnSpots.add(spotIndex);
-                      }
-                    });
-                  }
-                },
-                mouseCursorResolver:
-                    (FlTouchEvent event, LineTouchResponse? response) {
-                  if (response == null || response.lineBarSpots == null) {
-                    return SystemMouseCursors.basic;
-                  }
-                  return SystemMouseCursors.click;
-                },
-                getTouchedSpotIndicator:
-                    (LineChartBarData barData, List<int> spotIndexes) {
-                  return spotIndexes.map((index) {
-                    return TouchedSpotIndicatorData(
-                      const FlLine(
-                        color: Colors.pink,
-                      ),
-                      FlDotData(
-                        show: true,
-                        getDotPainter: (spot, percent, barData, index) =>
-                            FlDotCirclePainter(
-                          radius: 8,
-                          color: lerpGradient(
-                            barData.gradient!.colors,
-                            barData.gradient!.stops!,
-                            percent / 100,
-                          ),
-                          strokeWidth: 2,
-                          strokeColor: widget.indicatorStrokeColor,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return LineChart(
+              LineChartData(
+                showingTooltipIndicators: showingTooltipOnSpots.map((index) {
+                  return ShowingTooltipIndicators([
+                    LineBarSpot(
+                      tooltipsOnBar,
+                      lineBarsData.indexOf(tooltipsOnBar),
+                      tooltipsOnBar.spots[index],
+                    ),
+                  ]);
+                }).toList(),
+                lineTouchData: LineTouchData(
+                  touchCallback:
+                      (FlTouchEvent event, LineTouchResponse? response) {
+                    if (response == null || response.lineBarSpots == null) {
+                      return;
+                    }
+                    if (event is FlTapUpEvent) {
+                      final spotIndex = response.lineBarSpots!.first.spotIndex;
+                      setState(() {
+                        if (showingTooltipOnSpots.contains(spotIndex)) {
+                          showingTooltipOnSpots.remove(spotIndex);
+                        } else {
+                          showingTooltipOnSpots.add(spotIndex);
+                        }
+                      });
+                    }
+                  },
+                  mouseCursorResolver:
+                      (FlTouchEvent event, LineTouchResponse? response) {
+                    if (response == null || response.lineBarSpots == null) {
+                      return SystemMouseCursors.basic;
+                    }
+                    return SystemMouseCursors.click;
+                  },
+                  getTouchedSpotIndicator:
+                      (LineChartBarData barData, List<int> spotIndexes) {
+                    return spotIndexes.map((index) {
+                      return TouchedSpotIndicatorData(
+                        const FlLine(
+                          color: Colors.pink,
                         ),
-                      ),
-                    );
-                  }).toList();
-                },
-                touchTooltipData: LineTouchTooltipData(
-                  tooltipBgColor: Colors.pink,
-                  tooltipRoundedRadius: 8,
-                  getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
-                    return lineBarsSpot.map((lineBarSpot) {
-                      return LineTooltipItem(
-                        lineBarSpot.y.toString(),
-                        const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                        FlDotData(
+                          getDotPainter: (spot, percent, barData, index) =>
+                              FlDotCirclePainter(
+                            radius: 8,
+                            color: lerpGradient(
+                              barData.gradient!.colors,
+                              barData.gradient!.stops!,
+                              percent / 100,
+                            ),
+                            strokeWidth: 2,
+                            strokeColor: widget.indicatorStrokeColor,
+                          ),
                         ),
                       );
                     }).toList();
                   },
-                ),
-              ),
-              lineBarsData: lineBarsData,
-              minY: 16,
-              maxY: 24,
-              titlesData: FlTitlesData(
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    interval: 1,
-                    getTitlesWidget: (value, meta) {
-                      return bottomTitleWidgets(
-                        value,
-                        meta,
-                        constraints.maxWidth,
-                      );
+                  touchTooltipData: LineTouchTooltipData(
+                    tooltipBgColor: Colors.pink,
+                    tooltipRoundedRadius: 8,
+                    getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
+                      return lineBarsSpot.map((lineBarSpot) {
+                        return LineTooltipItem(
+                          lineBarSpot.y.toString(),
+                          const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      }).toList();
                     },
-                    reservedSize: 30,
                   ),
                 ),
-                rightTitles: const AxisTitles(),
-                topTitles: const AxisTitles(),
-              ),
-              gridData: const FlGridData(show: false),
-              borderData: FlBorderData(
-                show: true,
-                border: Border.all(
-                  color: Colors.white54,
+                lineBarsData: lineBarsData,
+                minY: 16,
+                maxY: 24,
+                titlesData: FlTitlesData(
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 1,
+                      getTitlesWidget: (value, meta) {
+                        return bottomTitleWidgets(
+                          value,
+                          meta,
+                          constraints.maxWidth,
+                        );
+                      },
+                      reservedSize: 30,
+                    ),
+                  ),
+                  rightTitles: const AxisTitles(),
+                  topTitles: const AxisTitles(),
+                ),
+                gridData: const FlGridData(show: false),
+                borderData: FlBorderData(
+                  show: true,
+                  border: Border.all(
+                    color: Colors.white54,
+                  ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          },
+        ),
       ),
     );
   }
@@ -300,8 +276,6 @@ Color lerpGradient(List<Color> colors, List<double> stops, double t) {
   }
 
   if (stops.length != colors.length) {
-    stops = [];
-
     colors.asMap().forEach((index, color) {
       final percent = 1.0 / (colors.length - 1);
       stops.add(percent * index);
