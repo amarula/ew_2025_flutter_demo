@@ -2,6 +2,6 @@
 
 Flutter thermostat demo for Embedded World 2025
 
-![Normal](screenshot/normal.png)
+![Normal](screenshot/homepage.png)
 ---
-![Boosting](screenshot/boosting.png)
+![Boosting](screenshot/forecast.png)
