@@ -2,147 +2,188 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+// Project imports:
+import 'package:ew_2025_flutter_demo/main.dart';
+import 'package:ew_2025_flutter_demo/widgets/day_forecast_widget.dart';
+import 'package:ew_2025_flutter_demo/widgets/temperature_text_widget.dart';
 
 class WeatherForecastWidget extends StatefulWidget {
   const WeatherForecastWidget({
-    required this.height,
     super.key,
   });
-
-  final double height;
 
   @override
   State<WeatherForecastWidget> createState() => _WeatherForecastWidgetState();
 }
 
 class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
+  String degreeToCompass(double degree) {
+    final array = [
+      'N',
+      'NNE',
+      'NE',
+      'ENE',
+      'E',
+      'ESE',
+      'SE',
+      'SSE',
+      'S',
+      'SSW',
+      'SW',
+      'WSW',
+      'W',
+      'WNW',
+      'NW',
+      'NNW',
+    ];
+
+    final v = ((degree / 22.5) + .5).toInt();
+    return array[(v % 16)];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: CarouselSlider(
-        options: CarouselOptions(
-          height: widget.height,
-          viewportFraction: 1,
-        ),
-        items: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return ListenableBuilder(
+      listenable: weatherForecastService,
+      builder: (context, child) {
+        return Container(
+          margin: const EdgeInsets.all(16),
+          // color: Colors.green.shade400,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Nuremberg',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Lottie.asset(
-                'assets/lottie/weather_partly_cloud.json',
-                height: 216,
-              ),
-              const Column(
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    '15°',
-                    style: TextStyle(
-                      fontSize: 32,
-                    ),
+                  const Padding(padding: EdgeInsets.only(left: 48)),
+                  SvgPicture.asset(
+                    'assets/weather_icons/${weatherForecastService.currentWeather.weatherIcon}.svg',
+                    width: 240,
+                    height: 240,
                   ),
-                  Text(
-                    'Partly Cloud',
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(padding: EdgeInsets.only(top: 8)),
+                      Text(
+                        weatherForecastService.currentWeather.areaName!,
+                        style: const TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 16)),
+                      Text(
+                        weatherForecastService
+                            .currentWeather.weatherDescription!.capitalize,
+                        maxLines: 2,
+                        softWrap: true,
+                        style: const TextStyle(
+                          fontSize: 56,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'MAX:19° MIN:5°',
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
+                  const Spacer(),
+                  TemperatureTextWidget(
+                    degree: weatherForecastService
+                        .currentWeather.temperature!.celsius!
+                        .toStringAsFixed(0),
+                    decimal: weatherForecastService
+                        .currentWeather.temperature!.celsius!
+                        .toStringAsFixed(1)
+                        .split('.')[1]
+                        .substring(0, 1),
+                    fontSize: 120,
                   ),
+                  const Padding(padding: EdgeInsets.only(right: 48)),
                 ],
               ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Text(
-                'Carpi',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Lottie.asset(
-                'assets/lottie/weather_sunny.json',
-                height: 216,
-              ),
-              const Column(
+              Row(
                 children: [
-                  Text(
-                    '22°',
-                    style: TextStyle(
-                      fontSize: 32,
-                    ),
+                  const Padding(padding: EdgeInsets.only(left: 48)),
+                  SvgPicture.asset(
+                    'assets/weather_icons/wind.svg',
+                    width: 48,
+                    height: 48,
                   ),
+                  const Padding(padding: EdgeInsets.only(right: 8)),
                   Text(
-                    'Sunny',
-                    style: TextStyle(
+                    '${degreeToCompass(weatherForecastService.currentWeather.windDegree!)} ${weatherForecastService.currentWeather.windSpeed} m/s',
+                    style: const TextStyle(
                       fontSize: 24,
+                      fontWeight: FontWeight.w300,
                     ),
                   ),
+                  const Spacer(),
+                  Image.asset(
+                    'assets/icons/humidity.png',
+                    width: 40,
+                    height: 40,
+                  ),
+                  const Padding(padding: EdgeInsets.only(right: 8)),
                   Text(
-                    'MAX:23° MIN:15°',
-                    style: TextStyle(
+                    '${weatherForecastService.currentWeather.humidity}%',
+                    style: const TextStyle(
                       fontSize: 24,
+                      fontWeight: FontWeight.w300,
                     ),
                   ),
+                  const Padding(padding: EdgeInsets.only(right: 48)),
                 ],
               ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Text(
-                'London',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
+              const Padding(padding: EdgeInsets.only(bottom: 8)),
+              const Divider(
+                thickness: 4,
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 280,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Padding(padding: EdgeInsets.all(8)),
+                    DayForecastWidget(
+                      weather: weatherForecastService.forecast[0],
+                    ),
+                    const VerticalDivider(
+                      thickness: 2,
+                    ),
+                    DayForecastWidget(
+                      weather: weatherForecastService.forecast[1],
+                    ),
+                    const VerticalDivider(
+                      thickness: 2,
+                    ),
+                    DayForecastWidget(
+                      weather: weatherForecastService.forecast[2],
+                    ),
+                    const VerticalDivider(
+                      thickness: 2,
+                    ),
+                    DayForecastWidget(
+                      weather: weatherForecastService.forecast[3],
+                    ),
+                    const VerticalDivider(
+                      thickness: 2,
+                    ),
+                    DayForecastWidget(
+                      weather: weatherForecastService.forecast[4],
+                    ),
+                    const Padding(padding: EdgeInsets.all(8)),
+                  ],
                 ),
               ),
-              Lottie.asset(
-                'assets/lottie/weather_storm.json',
-                height: 216,
-              ),
-              const Column(
-                children: [
-                  Text(
-                    '10°',
-                    style: TextStyle(
-                      fontSize: 32,
-                    ),
-                  ),
-                  Text(
-                    'Raining',
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
-                  ),
-                  Text(
-                    'MAX:11° MIN:4°',
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
-                  ),
-                ],
-              ),
+              const Padding(padding: EdgeInsets.all(4)),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
