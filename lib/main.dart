@@ -1,6 +1,6 @@
 // Dart imports:
-import 'dart:ffi' as ffi;
-import 'dart:io' show Directory;
+import 'dart:ffi';
+import 'dart:io' show Directory, File;
 
 // Flutter imports:
 import 'package:flutter/material.dart';
@@ -15,21 +15,33 @@ import 'package:ew_2025_flutter_demo/services/weather_forecast_service.dart';
 
 final weatherForecastService = WeatherForecastService();
 
-typedef HelloWorldFunc = ffi.Void Function();
-typedef HelloWorld = void Function();
+typedef VoidFuncCpp = Void Function();
+typedef VoidFunc = void Function();
 
 void main() {
-  final libraryPath =
-      path.join(Directory.current.path, 'thermostat_library', 'libhello.so');
+  try {
+    var libraryPath = path.join(
+      Directory.current.path,
+      'ew-2025-flutter-demo-can-lib',
+      'build',
+      'lib',
+      'libfluttercan.so',
+    );
 
-  final dylib = ffi.DynamicLibrary.open(libraryPath);
+    if (!File(libraryPath).existsSync()) {
+      libraryPath = 'libfluttercan.so';
+    }
 
-  // ignore: omit_local_variable_types
-  final HelloWorld hello = dylib
-      .lookup<ffi.NativeFunction<HelloWorldFunc>>('hello_world')
-      .asFunction();
+    final lib = DynamicLibrary.open(libraryPath);
 
-  hello();
+    final canStartRx = lib
+        .lookup<NativeFunction<VoidFuncCpp>>('can_start_rx')
+        .asFunction<VoidFunc>();
+
+    canStartRx();
+  } catch (e) {
+    print('Failed to load dynamic library $e');
+  }
 
   weatherForecastService
     ..init()
