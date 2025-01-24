@@ -1,47 +1,19 @@
-// Dart imports:
-import 'dart:ffi';
-import 'dart:io' show Directory, File;
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:path/path.dart' as path;
 
 // Project imports:
 import 'package:ew_2025_flutter_demo/pages/home_page.dart';
+import 'package:ew_2025_flutter_demo/services/sensor_board_service.dart';
 import 'package:ew_2025_flutter_demo/services/weather_forecast_service.dart';
 
 final weatherForecastService = WeatherForecastService();
-
-typedef VoidFuncCpp = Void Function();
-typedef VoidFunc = void Function();
+final sensorBoardService = SensorBoardService();
 
 void main() {
-  try {
-    var libraryPath = path.join(
-      Directory.current.path,
-      'ew-2025-flutter-demo-can-lib',
-      'build',
-      'lib',
-      'libfluttercan.so',
-    );
-
-    if (!File(libraryPath).existsSync()) {
-      libraryPath = 'libfluttercan.so';
-    }
-
-    final lib = DynamicLibrary.open(libraryPath);
-
-    final canStartRx = lib
-        .lookup<NativeFunction<VoidFuncCpp>>('can_start_rx')
-        .asFunction<VoidFunc>();
-
-    canStartRx();
-  } catch (e) {
-    print('Failed to load dynamic library $e');
-  }
+  sensorBoardService.init();
 
   weatherForecastService
     ..init()
