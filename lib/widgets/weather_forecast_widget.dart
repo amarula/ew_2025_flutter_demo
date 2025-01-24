@@ -51,9 +51,7 @@ class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
       builder: (context, child) {
         return Container(
           margin: const EdgeInsets.all(16),
-          // color: Colors.green.shade400,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,8 +60,8 @@ class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
                   const Padding(padding: EdgeInsets.only(left: 48)),
                   SvgPicture.asset(
                     'assets/weather_icons/${weatherForecastService.currentWeather.weatherIcon}.svg',
-                    width: 240,
-                    height: 240,
+                    width: 216,
+                    height: 216,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,13 +135,12 @@ class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
                   const Padding(padding: EdgeInsets.only(right: 48)),
                 ],
               ),
-              const Padding(padding: EdgeInsets.only(bottom: 8)),
               const Divider(
                 thickness: 4,
               ),
               SizedBox(
                 width: double.infinity,
-                height: 280,
+                height: 192,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
