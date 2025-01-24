@@ -25,7 +25,6 @@ class _DayForecastWidgetState extends State<DayForecastWidget> {
     return Expanded(
       child: Column(
         children: [
-          const Padding(padding: EdgeInsets.only(top: 16)),
           Text(
             widget.weather.weekDay,
             style: const TextStyle(
