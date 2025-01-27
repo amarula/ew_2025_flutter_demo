@@ -52,17 +52,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Center(
+        leading: Center(
           child: Text(
-            'Home',
-            style: TextStyle(
+            _showReloadForecast ? 'Nuremberg' : 'Home',
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 32,
               fontWeight: FontWeight.w600,
             ),
           ),
         ),
-        leadingWidth: 128,
+        leadingWidth: _showReloadForecast ? 192 : 112,
         centerTitle: true,
         title: Text(
           _time,
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
           Visibility(
             visible: _showReloadForecast,
             child: Padding(
-              padding: const EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.only(right: 8, top: 4, bottom: 4),
               child: ElevatedButton(
                 onPressed: () {
                   weatherForecastService
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                   minimumSize: const Size(56, 56),
                   maximumSize: const Size(56, 56),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                 ),
                 child: SvgPicture.asset(
