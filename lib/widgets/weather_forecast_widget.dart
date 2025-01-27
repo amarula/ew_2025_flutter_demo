@@ -49,6 +49,19 @@ class _WeatherForecastWidgetState extends State<WeatherForecastWidget> {
     return ListenableBuilder(
       listenable: weatherForecastService,
       builder: (context, child) {
+        if (weatherForecastService.forecast.isEmpty) {
+          return const Center(
+            child: Text(
+              'No data\n\nReload Weather Forecast',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 48,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          );
+        }
+
         return Container(
           margin: const EdgeInsets.all(16),
           child: Column(
