@@ -33,13 +33,13 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Padding(padding: EdgeInsets.only(left: 16)),
-        ListenableBuilder(
-          listenable: sensorBoardService,
-          builder: (context, child) {
-            return Expanded(
+    return ListenableBuilder(
+      listenable: sensorBoardService,
+      builder: (context, child) {
+        return Row(
+          children: [
+            const Padding(padding: EdgeInsets.only(left: 16)),
+            Expanded(
               child: Column(
                 children: [
                   const Padding(padding: EdgeInsets.symmetric(vertical: 40)),
@@ -105,7 +105,7 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
                             padding: EdgeInsets.symmetric(vertical: 8),
                           ),
                           Text(
-                            '${sensorBoardService.humidity}%',
+                            '${sensorBoardService.humidity.toStringAsFixed(0)}%',
                             style: const TextStyle(
                               fontSize: 56,
                               fontWeight: FontWeight.w400,
@@ -140,61 +140,58 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
                   const Spacer(),
                 ],
               ),
-            );
-          },
-        ),
-        const VerticalDivider(),
-        SizedBox(
-          width: 272,
-          child: Column(
-            children: [
-              const Padding(padding: EdgeInsets.symmetric(vertical: 40)),
-              const Text(
-                'Pressure',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const Spacer(),
-              Row(
+            ),
+            const VerticalDivider(),
+            SizedBox(
+              width: 272,
+              child: Column(
                 children: [
-                  const Spacer(),
-                  Image.asset(
-                    'assets/icons/pressure.png',
-                    width: 48,
-                    height: 48,
-                  ),
-                  const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
-                  Text(
-                    '${sensorBoardService.pressure} hPa',
-                    style: const TextStyle(
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 40)),
+                  const Text(
+                    'Pressure',
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   const Spacer(),
+                  Row(
+                    children: [
+                      const Spacer(),
+                      Image.asset(
+                        'assets/icons/pressure.png',
+                        width: 48,
+                        height: 48,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4),
+                      ),
+                      Text(
+                        '${sensorBoardService.pressure.toStringAsFixed(1)} hPa',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                  const Spacer(),
+                  SvgPicture.asset(
+                    weatherBasedOnPressure(),
+                    width: 128,
+                    height: 128,
+                  ),
+                  const Spacer(
+                    flex: 2,
+                  ),
                 ],
               ),
-              const Spacer(),
-              SvgPicture.asset(
-                weatherBasedOnPressure(),
-                width: 128,
-                height: 128,
-              ),
-              const Spacer(
-                flex: 2,
-              ),
-            ],
-          ),
-        ),
-        const VerticalDivider(),
-        ListenableBuilder(
-          listenable: sensorBoardService,
-          builder: (context, child) {
-            return Expanded(
+            ),
+            const VerticalDivider(),
+            Expanded(
               child: Column(
                 children: [
                   const Padding(padding: EdgeInsets.symmetric(vertical: 40)),
@@ -327,11 +324,11 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
                   const Spacer(),
                 ],
               ),
-            );
-          },
-        ),
-        const Padding(padding: EdgeInsets.only(left: 16)),
-      ],
+            ),
+            const Padding(padding: EdgeInsets.only(left: 16)),
+          ],
+        );
+      },
     );
   }
 }

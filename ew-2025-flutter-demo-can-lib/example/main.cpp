@@ -44,13 +44,30 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    can.on_rx([&](const can_frame& frame) {
-        const auto frame_str = CanUtils::can_frame_to_string(frame);
+    can_frame frame_123;
 
-        BOOST_LOG_TRIVIAL(info) << "New CAN frame: " << frame_str;
+    can.on_rx([&](const can_frame& frame) {
+        BOOST_LOG_TRIVIAL(info)
+            << "New CAN frame: " << CanUtils::can_frame_to_string(frame);
+
+        if (frame.can_id == 0x123) {
+            frame_123 = frame;
+            return;
+        }
+
+        const auto data_len = frame_123.len + frame.len;
+        unsigned char data_array[data_len];
+        for (auto i = 0, j = 0; i < data_len; i++) {
+            if (i >= frame_123.len) {
+                data_array[i] = frame.data[j];
+                j++;
+            } else {
+                data_array[i] = frame_123.data[i];
+            }
+        }
 
         Measurement measurement_proto;
-        if (!measurement_proto.ParseFromString(frame_str)) {
+        if (!measurement_proto.ParseFromArray(data_array, data_len)) {
             BOOST_LOG_TRIVIAL(error) << "Failed data deserialization";
             return;
         }
@@ -58,7 +75,7 @@ int main(int argc, char** argv) {
         BOOST_LOG_TRIVIAL(info) << "New measurement:";
         BOOST_LOG_TRIVIAL(info)
             << "temperature: " << measurement_proto.temperature();
-        BOOST_LOG_TRIVIAL(info) << "humidity:" << measurement_proto.humidity();
+        BOOST_LOG_TRIVIAL(info) << "humidity: " << measurement_proto.humidity();
         BOOST_LOG_TRIVIAL(info) << "pressure: " << measurement_proto.pressure();
     });
 
