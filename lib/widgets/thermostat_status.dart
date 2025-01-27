@@ -8,6 +8,7 @@ import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 // Project imports:
 import 'package:ew_2025_flutter_demo/main.dart';
+import 'package:ew_2025_flutter_demo/services/home_setpoints_service.dart';
 import 'package:ew_2025_flutter_demo/widgets/temperature_text_widget.dart';
 
 class ThermostatStatus extends StatefulWidget {
@@ -18,8 +19,17 @@ class ThermostatStatus extends StatefulWidget {
 }
 
 class _ThermostatStatusState extends State<ThermostatStatus> {
-  final _curHumidity = 60.0;
-  final _curTmp = 27.5;
+  String weatherBasedOnPressure() {
+    final pressure = sensorBoardService.pressure;
+
+    if (pressure > 1020) {
+      return 'assets/weather_icons/01d.svg';
+    } else if (pressure > 1000) {
+      return 'assets/weather_icons/03d.svg';
+    }
+
+    return 'assets/weather_icons/09d.svg';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +54,7 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
                   const Spacer(),
                   SleekCircularSlider(
                     appearance: CircularSliderAppearance(
+                      animationEnabled: false,
                       size: 352,
                       customWidths: CustomSliderWidths(
                         handlerSize: 16,
@@ -59,14 +70,16 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
                         ],
                       ),
                     ),
-                    initialValue: 25,
-                    onChange: (double _) {},
+                    initialValue: HomeSetpointsService.humidity,
+                    onChange: (double value) {
+                      HomeSetpointsService.humidity = value;
+                    },
                     innerWidget: (double value) {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Visibility(
-                            visible: value < _curHumidity,
+                            visible: value < sensorBoardService.humidity,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -131,7 +144,8 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
           },
         ),
         const VerticalDivider(),
-        Expanded(
+        SizedBox(
+          width: 272,
           child: Column(
             children: [
               const Padding(padding: EdgeInsets.symmetric(vertical: 40)),
@@ -166,7 +180,7 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
               ),
               const Spacer(),
               SvgPicture.asset(
-                'assets/weather_icons/01d.svg',
+                weatherBasedOnPressure(),
                 width: 128,
                 height: 128,
               ),
@@ -195,6 +209,7 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
                   const Spacer(),
                   SleekCircularSlider(
                     appearance: CircularSliderAppearance(
+                      animationEnabled: false,
                       size: 352,
                       customWidths: CustomSliderWidths(
                         handlerSize: 16,
@@ -212,14 +227,17 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
                     ),
                     min: 5,
                     max: 40,
-                    initialValue: 25,
-                    onChange: (double value) {},
+                    initialValue: HomeSetpointsService.temperature,
+                    onChange: (double value) {
+                      HomeSetpointsService.temperature = value;
+                    },
                     innerWidget: (double value) {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Visibility(
-                            visible: value > (_curTmp + 1),
+                            visible:
+                                value > (sensorBoardService.temperature + 1),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -245,7 +263,8 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
                             ),
                           ),
                           Visibility(
-                            visible: value < (_curTmp - 1),
+                            visible:
+                                value < (sensorBoardService.temperature - 1),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
