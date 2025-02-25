@@ -34,11 +34,11 @@ class SensorBoardService with ChangeNotifier {
         'ew-2025-flutter-demo-can-lib',
         'build',
         'lib',
-        'libfluttercan.so',
+        'libfluttercan.so.0',
       );
 
       if (!File(libraryPath).existsSync()) {
-        libraryPath = 'libfluttercan.so';
+        libraryPath = 'libfluttercan.so.0';
       }
 
       final lib = DynamicLibrary.open(libraryPath);
