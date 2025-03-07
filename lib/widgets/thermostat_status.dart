@@ -288,7 +288,8 @@ class _ThermostatStatusState extends State<ThermostatStatus> {
                           ),
                           TemperatureTextWidget(
                             degree: sensorBoardService.temperature
-                                .toStringAsFixed(0),
+                                .toStringAsFixed(1)
+                                .substring(0, 2),
                             decimal: sensorBoardService.temperature
                                 .toStringAsFixed(1)
                                 .split('.')[1]
