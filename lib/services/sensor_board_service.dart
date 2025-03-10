@@ -63,7 +63,7 @@ class SensorBoardService with ChangeNotifier {
         return false;
       }
 
-      _updateTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      _updateTimer = Timer.periodic(const Duration(milliseconds: 250), (_) {
         _temperature = getTemperature();
         _humidity = getHumidity();
         // kPa to hPa
